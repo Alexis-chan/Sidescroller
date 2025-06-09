@@ -1,0 +1,1558 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dico IA</title>
+  <script src="js/jquery-3.7.0.min.js"></script>    
+  
+  <script src="js/marked.umd.js"></script>
+  <script src="js/index.umd.js"></script>
+  <link href="css/chuta.css" rel="stylesheet" type="text/css" />
+    <link href="css/style_page.css" rel="stylesheet" type="text/css" />
+
+    <script>
+      // ⚠️  notez le .gfmHeadingId après markedGfmHeadingId
+      /* marked.use(markedGfmHeadingId.gfmHeadingId({ prefix: "dico-" })); */
+      marked.use(markedGfmHeadingId.gfmHeadingId());
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const md = document.getElementById("markdown").value.trim();
+        document.getElementById("content").innerHTML = marked.parse(md);
+      });
+    </script>
+
+<style>
+main{
+    /* plus besoin de flex du tout */
+    max-width: 1200px;
+    margin-inline: auto;    /* centre le conteneur */
+    padding-inline: 1rem;
+}
+
+h1 {
+  font-family: monospace;
+  border: solid lightgray 2px;
+  border-radius: 2rem;
+  text-align: center;
+}
+
+
+html{ scroll-behavior:smooth; }
+h2,h3{ scroll-margin-top:1rem; }
+
+img:hover{
+    transform: scale(1.75);
+}
+
+main div.content a {
+    text-decoration: none !important;
+    background: deepskyblue !important;
+    padding: 4px 8px !important;
+    color: white !important;
+    letter-spacing: 0.05em !important;
+    font-weight: 600 !important;
+    border-radius: 8px !important;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px !important;
+}
+
+main div.content a :hover{
+    background: #00bfff !important;
+    color: white !important;
+}
+
+main div.content ul li{
+    margin-top: 8px !important;
+    margin-bottom: 8px !important;
+}
+
+
+p {
+    margin-top: 0.55em;
+}
+
+hr {
+    width: 100%;
+    margin: 1em 0;
+    border: 0;
+    border-top: 1px solid #ccc;
+
+}
+
+#content{
+  background-color: white;
+  padding: 20px 40px 80px 80px;
+}
+
+h2{  
+  background-color: deepskyblue;
+    color: white;
+  padding-left: 12px;
+  margin-top: 40px;
+  font-weight: 600;
+}
+
+h3{  
+  background-color: antiquewhite;
+  padding-left: 24px;
+  margin-left: 36px; 
+  margin-top: 40px; 
+}
+
+button.btnSom{
+    position: fixed;
+    bottom: 40px;
+    right: 20px;
+}
+
+/* Responsive Dico IA */
+@media only screen and (max-width: 600px){
+    .main{
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        padding-inline: 0;
+    }
+    #content{
+        padding: 8px;
+    }
+
+    button.btnSom{
+    position: fixed;
+    bottom: 70px;
+    right: 50px;
+}
+
+}
+
+
+    
+
+</style>  
+
+</head>
+<body>
+
+<main>
+<!-- <a href="../"><div class="retour">retour</div></a> -->
+<a href="#"> <button class="btnSom">sommaire</button></a>
+
+<textarea id="markdown" style="display:none;">
+ # Dico des termes est concepts IA
+
+- [Activation function](#activation-function) - fonction d'activation
+- [Active parameters](#active-parameters) - paramètres actifs
+- [Apprentissage suppervisé](#apprentissage-suppervisé) - supervised learning
+- [Apprentissage non supervisé](#apprentissage-non-supervisé) - unsupervised learning
+- [Autoencoder](#autoencoder) - autoencodeur
+- [Autoregressive](#autoregressive) - modèle autoregressif
+- **Attention croisée** - voir [Cross-attention](#cross-attention)
+- [Biais](#biais-distorsion) - (distorsion systématique)
+- [Biais](#biais-offset) - (offset neurone)
+- [Catastrophic forgetting](#catastrophic-forgetting) - oubli catastrophique
+- **Clustering** - voir [Apprentissage non supervisé](#apprentissage-non-supervisé)
+- [Context window](#context-window) - fenêtre de contexte
+- **Couche de normalisation** - voir [Layer Normalization](#layer-normalization)
+- [Cross-attention](#cross-attention) - attention croisée
+- [Cross-entropy](#cross-entropy) - entropie croisée
+- [Dataset](#dataset)
+- **Denoising autoencoder** - voir [Autoencoder](#autoencoder)
+- [Decoder-only](#decoder-only)
+- **Descente de gradient** - voir [Gradient descend](#gradient-descend)
+- [Diffusion model](#diffusion-model) - modèle de diffusion
+- [DPO](#dpo) - Direct Preference Optimization
+- [Encoder-Decoder](#encoder-decoder) - encodeur décodeur
+- **Entropie croisée** - voir [Cross-entropy](#cross-entropy)
+- [Embedding vector](#embedding-vector) - vecteur d'embedding
+- **Feedforward** - voir [MLP (Multilayer Perceptron)](#mlp)
+- **Fenêtre de contexte** - voir [Context window](#context-window)
+- [Fine-tuning](#fine-tuning) - affinage
+- **float16**, **float32** - voir [Quantization](#quantization)
+- **Fonction de perte** - voir [Loss function](#loss-function)
+- **Fonction d'activation** - voir [Activation function](#activation-function)
+- **Forward diffusion** - voir [Diffusion model](#diffusion-model)
+- [Quantization](#quantization)
+- **Quantification** - voir [Quantization](#quantization)
+- [Layer Normalization](#layer-normalization) - couche de normalisation
+- **LayerNorm** - voir [Layer Normalization](#layer-normalization)
+- [LoRA (Low-Rank Adaptation)](#lora)
+- [Loss function](#loss-function) - fonction de perte
+- [GAN](#gan) - Generative Adversarial Network
+- [Gradient descend](#gradient-descend) - descente de gradient
+- **Greedy decoding** - voir [Sampling](#sampling)
+- **int8** - voir [Quantization](#quantization)
+- **KL divergence** - voir [Loss function](#loss-function)
+- [Latent space](#latent-space) - espace latent
+- [Latent space vs search space](#latent-space-vs-search-space)  - espace latent vs search space
+- [Learning-rate](#learning-rate) - taux d'apprantissage
+- **Minimiser une fonction de perte** - voir [Gradient descend](#gradient-descend)
+- [MLP (Multilayer Perceptron)](#mlp) - perceptron multicouche
+- **Modèle autoregressif** - voir [Autoregressive](#autoregressive)
+- **Modèle de diffusion** - voir [Diffusion model](#diffusion-model)
+- [Multi-head attention](#multi-head-attention)
+- **Oubli catastrophique** - voir [Catastrophic forgetting](#catastrophic-forgetting)
+- **Paramètres actifs** - voir [Active parameters](#active-parameters)
+- **Perceptron multicouche** - voir [MLP (Multilayer Perceptron)](#mlp)
+- [Prompt-engineering](#prompt-engineering)
+- **Pruning** - voir [Active parameters](#active-parameters)
+- **ReLU** (Rectified Linear Unit) - voir [Activation function](#activation-function)
+- **Replay** (rejeu) - voir [Catastrophic forgetting](#catastrophic-forgetting)
+- **Reverse diffusion** - voir [Diffusion model](#diffusion-model)
+- [Sampling](#sampling) - échantillonnage
+- [Sampling vs Transformer](#sampling-vs-transformer) - échantillonnage dans architecture Transformer
+- **Sigmoid** - voir [Activation function](#activation-function)
+- [Softmax](#softmax) - voir aussi [Activation function](#activation-function)
+- **Sparse autoencoder** - voir [Autoencoder](#autoencoder)
+- **Supervised learning** - voir [Apprentissage suppervisé](#apprentissage-suppervisé)
+- **Tanh** - voir [Activation function](#activation-function)
+- **Tok K sampling** - voir [Sampling](#sampling)
+- **Tok P sampling** - voir [Sampling](#sampling)
+- **Temperature sampling** - voir [Sampling](#sampling)
+- [Tokens](#tokens)
+- [Transformer](#transformer)
+- **Unsupervised learning** - voir [Apprentissage non supervisé](#apprentissage-non-supervisé)
+- **Variational autoencoder (VAE)** - voir [Autoencoder](#autoencoder)
+- **Vecteur d'embedding** - voir [Embedding vector](#embedding-vector)
+
+<!-- //A FAIRE
+A2A (agent to agent)
+ADK
+Active parametres
+Activation space
+Agent
+Alexnet
+ANN (index ivfflat et HNSW)
+Architecture séquentielle / Architectiture parralèle
+Attention mechanism / Attention layer / shared attention / Attention
+BatchNorm
+BERT
+Bayesian optimization, grid search, random search, …
+Byte-Pair Encoding
+BF16
+Causal self-attention
+Chain of toughts
+Couche linéaire (projection)
+Cold start
+Deep Learning
+Distribution vraie
+Distribution prédite
+Dot-product attention
+Escape velocity
+Entropy
+Energy based model (machine de Boltzman)
+Expert system
+Feedforward
+FLAN
+FLOPs
+Fonction de densité de probabilité
+FP8 / FP16 / 4K presision
+Génératif / Predictif - discriminant
+GPQA
+GPT
+Hyperpatamètres
+HUgginface
+Information theory
+Jax
+Keras
+Layer
+Layer normalization & résidus
+LLM
+LMM
+Logit
+LSTM
+Matrice de confusion
+Mamba
+Masked causal self-attention mechanism
+MCP - Model Context Protocol
+Missalignement / inner missalignement / outer missalignement
+MSE (Mean Squared Error)
+MoE
+Monte-Carlo (Algortihme de Monte-Carlo)
+Multimodal
+Needle-in-ahaystack
+Neural network
+NLP
+Overfiting
+Ollama
+Parramètres
+Parametric model
+Perceptron
+Prédiction
+Pre-trainning
+Poids du modèle
+Policy
+Post-trainning
+Positionnal encoding
+PPO
+Pytorch
+Quantization
+Queries / keys /values
+Q V cache
+Réduction de dimensionnalité 
+Représentation latente de dimension réduite
+Reward 
+Reward hacking
+Ring attention
+RL
+RLHF
+RNN
+Sampling space
+Scaling
+Scaling laws
+Score L2 / F1 / Précision
+Search space
+Seed
+Self-attention
+SFT
+Shared attention
+Signal d’apprentissage
+SLM
+Softmax
+Scalable-Softmax
+Stochastic gradient descent (SGD)
+Subquadratic model
+T5
+Tensorflow
+Tokeniser
+Trainning
+Tree of toughts
+TTA - Test Time Adaptative
+TTC - Test Time Compute
+Unigram Language Model
+Word2vec
+VAE - Autoencoders variationnels
+VLM
+Wheight and bias 
+Zero shot learning
+-->
+
+--------------------------------------------------------------------------------------------------------------
+
+## Activation function
+
+Le concept de **fonction d’activation** (activation function) est une composante essentielle des réseaux de neurones.
+
+### ⚡ Rôle
+
+Une fonction d’activation **introduit de la non-linéarité dans le réseau.**
+Sans elle, même un réseau profond ne ferait que des combinaisons linéaires des entrées, ce qui limiterait fortement sa capacité à modéliser des phénomènes complexes.
+
+### 🔍 Fonctionnement
+
+Chaque neurone applique une fonction d’activation après avoir calculé une somme pondérée de ses entrées :
+
+![actvation-01](./images/img-dico-ia/activation_fuction.png "activation function")
+
+où 𝜙 est la fonction d’activation.
+
+### 🧠 Fonctions courantes
+
+- **ReLU** (Rectified Linear Unit)
+
+![relu-01](./images/img-dico-ia/relu.png "relu")
+
+Très utilisée car simple, rapide, et efficace pour les couches profondes.
+
+- **Sigmoid**
+
+![sigmoid-01](./images/img-dico-ia/sigmoid.png "sigmoid")
+
+Anciennement populaire, mais peut provoquer des gradients trop petits.
+
+- **Tanh** : similaire à sigmoid mais centrée autour de 0.
+- **Softmax** : transforme un vecteur en une distribution de probabilité (souvent en sortie de modèle de classification ou LLM).
+
+### ✅ En résumé - Activation function
+
+La fonction d’activation donne au réseau la capacité de modéliser des relations complexes et non-linéaires.
+C’est elle qui permet aux modèles d’IA de « comprendre » des structures plus riches que des simples règles linéaires.
+
+--------------------------------------------------------------------------------------------------------------
+
+## Active parameters
+
+Les **paramètres actifs** (active parameters) sont une notion importante dans l’optimisation et la compression des modèles.
+
+### 🧠 Définition - Active parameters
+
+Les **paramètres actifs** sont les **poids du modèle qui sont effectivement utilisés ou modifiés lors de l’apprentissage ou de l’inférence**, par opposition à des **poids figés**, **inutilisés**, ou **masqués** (comme dans les techniques de pruning, sparsity, ou LoRA).
+
+### 🔍 Pourquoi c’est important ? - Active parameters
+
+- **Efficacité** : réduire le nombre de paramètres actifs permet de limiter les coûts mémoire et calcul.
+- **Interprétabilité** : identifier les paramètres qui influencent réellement la sortie du modèle aide à mieux comprendre son comportement.
+- **Personnalisation** : dans les techniques comme LoRA ou Adapter layers, seuls certains sous-ensembles de paramètres sont actifs, ce qui rend les adaptations plus légères.
+
+### 🧰 Utilisation - Active parameters
+
+- **Fine-tuning partiel** : on gèle une partie du modèle et on entraîne seulement les paramètres actifs.
+- **Pruning** : suppression des poids inactifs (par magnitude ou gradient) pour compresser le modèle.
+- **Efficient deployment** : ne charger en mémoire que les blocs de paramètres réellement nécessaires à une tâche ou à un utilisateur donné.
+
+### ✅ En résumé - Active parameters
+
+Les **paramètres actifs** sont ceux qui comptent vraiment dans le fonctionnement du modèle.
+Identifier et exploiter ce sous-ensemble permet d’améliorer la performance, la compréhension, et la déployabilité des réseaux de neurones modernes.
+
+--------------------------------------------------------------------------------------------------------------
+
+## Apprentissage suppervisé
+
+### 🎓 Définition - Apprentissage suppervisé
+
+L’**apprentissage supervisé** (supervised learning) est une méthode où le modèle apprend à prédire une sortie à partir d’une entrée, en utilisant un **jeu de données annoté**.
+Chaque exemple du dataset contient :
+
+- une entrée (ex. : une image, un texte, des caractéristiques numériques),
+- une sortie cible ou étiquette (ex. : catégorie, valeur numérique, texte attendu).
+
+### 🧠 Comment ça fonctionne ? - Apprentissage suppervisé
+
+1. On alimente le modèle avec des paires entrée/sortie.
+2. Il fait une prédiction.
+3. On mesure l’erreur entre sa prédiction et la vraie étiquette (via une **fonction de perte**).
+4. L’algorithme ajuste les **poids du modèle** (par **descente de gradient** typiquement).
+5. Le processus est répété jusqu’à ce que l’erreur soit minimale ou satisfaisante.
+
+### 📦 Exemples d’application - Apprentissage suppervisé
+
+- Classification d’images (chat vs chien),
+- Détection de spam dans les emails,
+- Prédiction de prix immobiliers (régression),
+- Traduction automatique (avec un jeu de paires phrase-source / phrase-cible).
+
+### ✅ En résumé - Apprentissage suppervisé
+
+L’apprentissage supervisé est comme un élève qui apprend à partir de corrigés : en comparant ses réponses à celles du professeur, il ajuste sa compréhension jusqu’à généraliser correctement sur de nouveaux cas similaires.
+
+--------------------------------------------------------------------------------------------------------------
+
+## Autoregressive
+
+Le concept d’**autoregressive** (auto-régressif), est fondamental pour de nombreux modèles de génération de texte comme GPT.
+
+### 🔄 Qu’est-ce qu’un modèle autoregressive ?
+
+Un modèle autoregressif prédit chaque élément de sortie (token) en se basant uniquement sur les éléments déjà générés ou observés.
+Concrètement, pour une séquence de tokens (x)1, (x)2, ..., (x)n , un modèle autoregressif estime la probabilité jointe comme :
+
+![autoregressive-01](./images/img-dico-ia/autoregressive_01.png "autoregressive")
+
+Chaque token  (x)i  est généré séquentiellement, en conditionnant sa distribution sur tous les précédents.
+
+### 🧠 Pourquoi c’est important ? - Autoregressive
+
+- **Simplicité de décodage** : on génère mot à mot ou token par token, en utilisant le même réseau pour chaque position.
+- **Modularité** : la prédiction se fait étape par étape, facilitant l’application de différentes stratégies de sampling (greedy, top-k, top-p…).
+- **Performance** : cette approche a prouvé son efficacité pour la cohérence locale et le maintien du contexte à court terme.
+
+### 🔧 Exemples concrets
+
+- **GPT** (Generative Pre-trained Transformer) est un modèle decoder-only autoregressif : il lit le contexte précédent puis génère le token suivant, et ainsi de suite.
+- **WaveNet** (pour l’audio) : génère chaque échantillon sonore en conditionnant sur l’historique audio déjà produit.
+- **PixelRNN** / **PixelCNN** en vision : génèrent chaque pixel en se basant sur les pixels déjà synthétisés.
+
+### ✅ En résumé - Autoregressive
+
+Un modèle autoregressif produit sa sortie token par token, en s’appuyant exclusivement sur ce qui a déjà été généré. C’est cette dynamique séquentielle qui rend possibles des générations de texte, d’audio ou d’images cohérentes et progressives.
+
+--------------------------------------------------------------------------------------------------------------
+
+## Biais distorsion
+
+### ⚖️ Qu’est-ce qu’un biais en IA ?
+
+Le **biais** désigne une distorsion systématique dans les prédictions ou comportements d’un modèle.
+Ce n’est pas une erreur ponctuelle, mais une tendance persistante à favoriser certaines sorties ou à sous-représenter certaines catégories.
+
+Il peut apparaître à plusieurs niveaux :
+
+- **Dans les données** (données d’entraînement déséquilibrées, stéréotypées, ou mal collectées),
+- **Dans l’architecture du modèle** (choix des fonctions, régularisations, etc.),
+- **Dans l’interprétation des résultats** (présentation ou usage biaisé des sorties).
+
+### 🧠 Types de biais courants
+
+- **Biais de sélection** : certaines classes ou groupes sont sur-représentés dans le dataset.
+- **Biais de confirmation** : le modèle renforce les hypothèses dominantes dans les données.
+- **Biais algorithmique** : lié au fonctionnement interne du modèle, indépendamment des données.
+- **Biais sociétal** : le modèle reproduit des stéréotypes de genre, d’origine, ou d’âge présents dans les données.
+
+### 🛠️ Pourquoi c’est un problème ?
+
+- Cela peut mener à des discriminations (ex. : refus de crédit pour certains profils),
+- Fausser les prédictions dans des domaines sensibles (santé, justice, éducation),
+- Nuire à la fiabilité et l’équité du modèle.
+
+### ✅ En résumé (biais - distortion)
+
+Le biais en IA n’est pas une simple erreur technique : c’est une déviation structurelle qui peut avoir des conséquences majeures.
+Le détecter, le mesurer et le réduire est une étape cruciale dans le déploiement de modèles éthiques et robustes.
+
+--------------------------------------------------------------------------------------------------------------
+
+## Biais offset
+
+### 1. Le biais comme paramètre d’un neurone (offset)
+
+Dans un réseau de neurones, chaque neurone calcule une somme pondérée de ses entrées, puis lui ajoute un biais avant d’appliquer la fonction d’activation.
+Formellement, pour un neurone :
+
+z = (w1)(x1) + (w2)(x2) + ... + (wn)(xn) + (b)
+
+- w(i) sont les **poids** (weights),
+- b est le **biais** (bias).
+
+### 🔍 Rôle du biais
+
+- Il permet au neurone de se décaler : sans biais, la sortie d’un neurone serait forcément nulle quand toutes les entrées sont à zéro.
+- Le biais agit comme une ordonnée à l’origine (intercept) dans une régression linéaire, autorisant le modèle à mieux s’ajuster aux données.
+
+### 🛠️ Apprentissage
+
+- Le biais est un **paramètre appris** durant la **descente de gradient**, exactement comme les **poids**.
+- Il a son propre gradient *∂𝐿/∂𝑏* et est mis à jour à chaque itération.
+
+### ✅ En résumé (biais - offset)
+
+- Biais (bias) en tant que paramètre : un offset appris *b* ajouté à la somme pondérée dans chaque neurone, qui permet de décaler la fonction d’activation.
+
+--------------------------------------------------------------------------------------------------------------
+
+## Apprentissage non supervisé
+
+L’apprentissage non supervisé (unsupervised learning), une méthode clé du machine learning.
+
+### 🎲 Définition
+
+L’apprentissage non supervisé consiste à faire apprendre un modèle uniquement à partir de données **non étiquetées**, c’est-à-dire sans fournir de “bonne réponse” à chaque exemple.
+Le **but est de découvrir des structures, des motifs ou des groupements inhérents aux données**.
+
+### 🧩 Principales techniques
+
+- **Clustering** : regrouper des objets similaires
+  - *K-means* : partitionne les données en K clusters en minimisant la variance intra-groupe.
+  - *DBSCAN* : identifie des clusters de densité sans fixer à l’avance le nombre de groupes.
+- **Réduction de dimensionnalité** : projeter les données dans un espace plus petit tout en préservant leur structure
+  - *PCA* (Analyse en Composantes Principales)
+  - *t-SNE*, *UMAP* pour la visualisation
+- **Modèles génératifs** : apprendre la distribution des données pour générer de nouveaux exemples
+  - *Autoencodeurs*
+  - *Variational Autoencoders* (VAE)
+  - *GANs* (Generative Adversarial Networks)
+
+### 🔍 Pourquoi l’utiliser ?
+
+- **Exploration des données** : comprendre la structure et les sous-groupes avant d’entraîner des modèles supervisés.
+- **Prétraitement** : réduire la dimensionnalité pour accélérer l’apprentissage ou améliorer la visualisation.
+- **Détection d’anomalies** : repérer des points de données inhabituels qui ne s’intègrent pas bien dans les clusters principaux.
+
+### ✅ En résumé - Apprentissage non supervisé
+
+L’apprentissage non supervisé permet au modèle de découvrir par lui-même des motifs dans des données brutes.
+C’est une étape précieuse pour explorer, structurer ou générer des données sans nécessiter d’étiquetage manuel.
+
+--------------------------------------------------------------------------------------------------------------
+
+## Context window
+
+### 🧠 Qu’est-ce que le *context window* ?
+
+C’est la **quantité maximale de texte** (en tokens) qu’un modèle de langage peut lire et traiter en une seule fois.
+Les LLM ne « comprennent » pas un texte dans son intégralité : ils le découpent en morceaux de taille limitée, appelés *fenêtres de contexte*.
+
+### 📏 Taille typique
+
+- GPT-3 : jusqu’à 4 096 tokens.
+- GPT-4 : selon la version, de 8 192 à 128 000 tokens.
+- Claude 3 : jusqu’à 200 000 tokens.
+- 22/04/2025 :
+  - Llama 4 scout : 10M
+  - Gemnini 2.5 : 1M
+  - GTP 4.1 : 1M
+
+Un *token* est une unité textuelle, souvent plus courte qu’un mot (ex : « internationalisation » = 3 tokens).
+
+### ⚙️ Pourquoi c’est important ?
+
+La fenêtre de contexte détermine :
+
+- la capacité du modèle à comprendre des documents longs,
+- la cohérence des réponses,
+- la qualité du raisonnement si le modèle doit se souvenir de nombreuses informations.
+
+### 🧩 Limite & stratégies
+
+Quand un texte dépasse cette taille, il faut **tronquer**, **résumer**, ou utiliser des techniques comme le **retrieval-augmented generation (RAG)** pour garder un accès contextuel large.
+
+### ✅ En résumé
+
+Le *context window* est la mémoire immédiate du LLM : plus elle est grande, plus le modèle peut manipuler de texte à la fois, ce qui augmente sa puissance dans les tâches complexes.
+
+--------------------------------------------------------------------------------------------------------------
+
+## Softmax
+
+Le concept de fonction softmax, est très utilisé dans les modèles de classification et dans les LLMs.
+
+### 📐 Qu’est-ce que la softmax ?
+
+La fonction softmax transforme un vecteur de scores (appelés logits) en une distribution de probabilité.
+Chaque valeur produite par la softmax est comprise entre 0 et 1, et la somme de toutes les valeurs est égale à 1.
+
+Formellement, pour un vecteur (Z) = (Z1, Z2, …, Zn), la sortie de la softmax est :
+
+![softmax](./images/img-dico-ia/softmax.png "softmax")
+
+### 🧠 Pourquoi l’utiliser ?
+
+- Elle permet de convertir les **logits bruts** d’un réseau (souvent très dispersés) en probabilités interprétables.
+- Elle est utilisée en **fin de réseau** pour des tâches de classification (ex. : prédire la probabilité d’appartenance à une classe).
+- Dans les **LLM**, elle sert à transformer les sorties du modèle en d**istribution de probabilité sur le vocabulaire** pour permettre le sampling du prochain token.
+
+### 🎯 Propriétés
+
+- Accentue les différences : **les plus grands logits obtiennent une probabilité plus élevée, et les petits logits sont écrasés**.
+- Sensible à l’échelle : **les logits très grands peuvent dominer l’ensemble de la distribution (d’où l’usage fréquent d’un facteur de température pour moduler cet effet)**.
+
+### ✅ En résumé - Softmax
+
+La *softmax* **transforme un vecteur numérique en distribution probabiliste**, permettant de choisir ou d’échantillonner une sortie dans des tâches de génération ou de classification.
+C’est l’étape finale incontournable de nombreux réseaux de neurones.
+
+--------------------------------------------------------------------------------------------------------------
+
+## Autoencoder
+
+L'**autoencodeur** (autoencoder), est une architecture couramment utilisée dans l’apprentissage non supervisé et les modèles génératifs.
+
+### 🔄 Définition : autoencoder
+
+Un **autoencodeur** est un réseau de neurones conçu pour reproduire son entrée à la sortie.
+Il est constitué de deux parties :
+
+1. **Encodeur** : compresse les données d’entrée en une représentation latente de dimension réduite.
+2. **Décodeur** : reconstruit l’entrée originale à partir de cette représentation comprimée.
+
+### 🧠 Pourquoi utiliser un autoencodeur ?
+
+L’objectif n’est pas seulement de recopier les données, mais de forcer le modèle à apprendre les caractéristiques essentielles des données pour les représenter de manière compacte.
+
+Cela permet de :
+
+- détecter des motifs cachés,
+- réduire la dimension des données,
+- générer de nouvelles données proches de l’original,
+- détecter des anomalies (une reconstruction de mauvaise qualité peut signaler un cas atypique).
+
+### 📦 Variantes connues
+
+- **Denoising autoencoder** : apprend à reconstruire une entrée propre à partir d’une version bruitée.
+- **Variational autoencoder (VAE)** : apprend une distribution probabiliste sur l’espace latent, utilisé pour la génération.
+- **Sparse autoencoder** : contraint la représentation latente à n’activer qu’un petit nombre de neurones.
+
+### ✅ En résumé - Autoencoder
+
+Les autoencodeurs sont des outils puissants pour apprendre des représentations compactes des données.
+Ils sont largement utilisés en compression, détection d’anomalies, et comme fondation pour des modèles génératifs comme les VAE.
+
+--------------------------------------------------------------------------------------------------------------
+
+## Cross-attention
+
+Le mécanisme de **cross-attention** (attention croisée), essentiel dans les architectures encoder-decoder comme T5 ou BART.
+
+### 🔄 Qu’est-ce que la cross-attention ?
+
+La **cross-attention** est une variante de l’attention qui relie deux séquences différentes :
+
+- **les requêtes** (*queries*) proviennent d’une séquence (souvent la sortie partielle du décodeur),
+- les **clés** (*keys*) et **valeurs** (*values*) proviennent d’une autre séquence (généralement la représentation produite par l’encodeur).
+- Contrairement à la *self-attention*, qui compare chaque position d’un même élément à lui-même, la cross-attention permet au décodeur de « regarder » directement les informations encodées de l’entrée.
+
+### ⚙️ Comment ça fonctionne ? - Cross-attention
+
+1. **Requêtes Q** : issues de l’état actuel du décodeur (à la couche i).
+2. **Clés K** et **Valeurs V**: extraites de la sortie de l’encodeur (même couche i).
+3. On calcule les scores d’attention :
+![cross-attention](./images/img-dico-ia/cross-attention.png "cross-attention")
+4. On applique un softmax sur ces scores pour obtenir des poids.
+5. On pondère V par ces poids, ce qui donne une contribution contextuelle supplémentaire à la génération du texte.
+
+### 🤔 Pourquoi c’est important ? - Cross-attention
+
+- **Alignement** : le décodeur peut s’appuyer directement sur les informations clés de l’entrée, ce qui améliore la qualité des traductions, résumés ou toute tâche de transformation de séquence à séquence.
+- **Efficacité** : en séparant self-attention (qui gère la cohérence interne de la séquence en cours de génération) et cross-attention (qui introduit l’information externe), on obtient un modèle plus modulable et performant.
+
+### ✅ En résumé - Cross-attention
+
+La **cross-attention** est le lien entre encodeur et décodeur : elle permet à chaque étape de génération de puiser dans la représentation de l’entrée pour produire une sortie plus précise et contextuellement pertinente.
+
+*(suite) pour la formule de calcul du score d'où viennent l'exposant T et la racine d ?*
+
+Excellente question ! La formule standard de l’attention (dot-product attention) est :
+
+![dot-product_attention](./images/img-dico-ia/dot-product_attention.png "dot-product_attention")
+
+Voici d’où viennent exactement le **T** (transpose) et la **racine** :
+
+![dot-product_attention_Transpose](./images/img-dico-ia/dot-product_attention_Transpose.png "dot-product_attention_Transpose")
+![dot-product_attention_Factor](./images/img-dico-ia/dot-product_attention_Factor.png "dot-product_attention_Factor")
+
+En résumé :
+
+![dot-product_attention_resume](./images/img-dico-ia/dot-product_attention_resume.png "dot-product_attention_resume")
+
+--------------------------------------------------------------------------------------------------------------
+
+## Catastrophic forgetting
+
+### 🧠 Qu’est-ce que le catastrophic forgetting ?
+
+C’est le phénomène par lequel un modèle de machine learning, lorsqu’il est entraîné séquentiellement sur plusieurs tâches, perd brutalement sa capacité à bien réaliser les premières tâches dès qu’il apprend les suivantes.
+Autrement dit, il « oublie » ce qu’il avait précédemment appris.
+
+### ⚙️ Pourquoi ça se produit ?
+
+Lorsqu’on ajuste les poids du réseau sur une nouvelle tâche, la descente de gradient modifie la même mémoire (les mêmes paramètres) qui stockait l’information des tâches antérieures.
+
+Sans mécanisme protégeant ces anciens acquis, les nouveaux ajustements les effacent.
+
+### 🛠️ Stratégies pour limiter l’oubli
+
+1. **Replay (rejeu)** : conserver un petit buffer de données des anciennes tâches et les réutiliser en entraînement mixte.
+2. **Regularization-based methods** : ajouter une pénalité dans la fonction de perte pour conserver les poids importants pour les tâches précédentes (ex. : Elastic Weight Consolidation).
+3. **Architectural approaches** : allouer des sous-réseaux ou des modules distincts pour chaque tâche, afin de ne pas mutualiser tous les paramètres.
+4. **Progressive networks** : empiler de nouveaux réseaux tout en gardant les anciens figés (sans les modifier).
+
+### ✅ En résumé - Catastrophic forgetting
+
+Le catastrophic forgetting apparaît quand un modèle formé séquentiellement sur plusieurs jeux de données n’arrive pas à conserver ses performances passées.
+Gérer cet oubli est essentiel pour développer des IA capables d’apprentissage continu et d’adaptation progressive sans devoir tout réentraîner de zéro à chaque nouvelle tâche.
+
+--------------------------------------------------------------------------------------------------------------
+
+## Cross-entropy
+
+La **cross-entropy** est une **fonction de perte** largement utilisée dans les modèles de classification et les LLM.
+
+### 📉 Qu’est-ce que la cross-entropy ?
+
+La **cross-entropy** (entropie croisée) mesure la **distance** entre deux distributions de probabilité :
+
+1. La **distribution vraie** (souvent représentée comme un vecteur one-hot indiquant la bonne classe),
+2. La **distribution prédite** (sortie du modèle, généralement après une softmax).
+
+Formule :
+
+![cross-entropy](./images/img-dico-ia/cross-entropy.png "cross-entropy")
+
+où (y)i est la probabilité vraie (1 pour la classe correcte, 0 sinon) et (p)i la probabilité prédite.
+
+### 🧠 Pourquoi l’utiliser ? - Cross-entropy
+
+- **Convient aux problèmes de classification multi-classes**, notamment avec **softmax** en sortie.
+- Elle **pénalise fortement** les **erreurs de prédiction confiantes et incorrectes**.
+- Elle a un **bon comportement mathématique** pour la descente de gradient, avec une courbe de perte bien formée.
+
+### ✅ En résumé - Cross-entropy
+
+**La cross-entropy quantifie à quel point les prédictions du modèle diffèrent de la vérité.**
+C’est la **fonction de perte de référence pour les modèles de classification**, en particulier ceux basés sur des distributions de probabilité comme les LLM.
+
+--------------------------------------------------------------------------------------------------------------
+
+## Dataset
+
+### 📚 Qu’est-ce qu’un dataset ?
+
+Un dataset est simplement un ensemble organisé de données utilisé pour entraîner, valider ou tester un modèle d’IA.
+Il peut contenir :
+
+- des textes (en NLP),
+- des images (en vision par ordinateur),
+- des sons,
+- ou des structures complexes (comme des graphes ou des séries temporelles).
+
+Chaque élément d'un dataset correspond généralement à une entrée (input) et parfois à une étiquette (label), dans le cas de l’apprentissage supervisé.
+
+### 🔥 Caractéristiques importantes d’un bon dataset
+
+- **Qualité** : les données doivent être pertinentes, bien annotées et représentatives du problème à résoudre.
+- **Quantité** : un volume suffisant est souvent nécessaire pour entraîner un modèle performant.
+- **Diversité** : il faut couvrir un maximum de cas possibles pour éviter le surapprentissage (overfitting).
+
+### 🏗️ Quelques exemples célèbres
+
+- **ImageNet** : pour la reconnaissance d’images.
+- **COCO** : pour la détection d’objets.
+- **Common Crawl** : pour l'entraînement de grands modèles de langage (énorme collection de pages web).
+- **CIFAR-10** : petit dataset d’images pour débuter en deep learning.
+
+✅ En résumé
+
+Un dataset est la "nourriture" de l’IA.
+Sans données fiables et bien structurées, même le modèle le plus avancé ne pourra rien apprendre correctement.
+
+--------------------------------------------------------------------------------------------------------------
+
+## Decoder-only
+
+Q: Comment un modèle **decoder-only** comme GPT peut malgré tout “comprendre” le texte qu’on lui donne (voir encoder/decoder).
+
+### 🔍 Le rôle de l’**embedding** et du **positional encoding**
+
+1. **Embedding** : chaque mot (ou token) est d’abord converti en vecteur numérique.  
+2. **Positional encoding** : on ajoute à ces vecteurs une information sur leur position dans la séquence.  
+
+Ces deux étapes donnent au modèle une représentation initiale du texte, prête à être traitée par les couches suivantes.
+
+### 🤝 L’**auto-attention causale** (causal self-attention)
+
+– Dans un transformer decoder-only, chaque couche contient un mécanisme de **self-attention** masquée (causale).  
+– **Masquée** signifie que, pour chaque position *i*, le modèle ne peut “regarder” que les positions ≤ *i*.  
+– En calculant des poids d’attention, il apprend à relier chaque token à l’ensemble du contexte précédent, capturant ainsi le sens global de la séquence.
+
+### 🏗️ Pas d’encodeur séparé, mais un flux unifié
+
+Contrairement à une architecture **encoder-decoder** (où l’encodeur produit d’abord un état intermédiaire qu’un décodeur lit ensuite), le decoder-only :
+
+1. **Incrémente** l’état interne au fur et à mesure qu’il parcourt la séquence : chaque couche affine la représentation du contexte.  
+2. **Consolide** dans ses couches profondes une compréhension de plus en plus riche : on pourrait voir ces couches comme un encodeur interne “imbriqué” dans le décodeur.  
+3. **Produit** enfin, à la sortie, les probabilités du prochain token, en utilisant cette représentation contextualisée.
+
+### ✅ En résumé - Décoder-only
+
+Même sans un bloc encodeur dédié, GPT “comprend” grâce à ses couches successives de self-attention causale et de feed-forward : ces opérations itératives construisent une représentation du texte étape par étape, permettant à la fois d’analyser le contexte et de générer la suite la plus cohérente.
+
+--------------------------------------------------------------------------------------------------------------
+
+## Diffusion model
+
+Le  modèle de diffusion (diffusion model), est un type de générateur de données populaire pour images (en étude pour la génération de code - 2025).
+
+### 🌫️ Qu’est-ce qu’un modèle de diffusion ?
+
+Un modèle de diffusion est un réseau génératif qui apprend à transformer du bruit aléatoire en données structurées (images, audio, etc.) via un processus en deux phases :
+
+- **Diffusion avant** (forward diffusion) : on **ajoute progressivement du bruit gaussien à des données réelles**, jusqu’à obtenir presque du bruit pur.
+- **Diffusion inverse** (reverse diffusion) : on **entraîne un modèle à estimer comment retirer ce bruit**, étape par étape, pour récupérer les données originales.
+
+### 🔄 Mécanisme de génération
+
+1. On part d’un vecteur latent initial (𝑥)𝑇 ∼ 𝑁(0,𝐼) (du bruit).
+2. Le modèle prédit, à chaque pas 𝑡, comment obtenir une version légèrement moins bruitée (𝑥)𝑡−1 à partir de (𝑥)𝑡
+3. Après 𝑇 itérations de débruitage, on aboutit à un échantillon 𝑥0 qui **ressemble** à la vraie donnée.
+
+### 🧠 Pourquoi c’est performant ?
+
+- **Qualité d’image** : produit souvent des images plus nettes et détaillées que les GANs, sans les problèmes de mode collapse.
+- **Contrôle** : permet de guider la génération (via classifier guidance ou classifier-free guidance) pour orienter le style, le contenu ou la cohérence sémantique.
+- **Stabilité d’entraînement** : l’optimisation est plus simple car on minimise une somme de pertes de reconstruction de bruit à chaque étape.
+
+### 🛠️ Applications
+
+- Synthèse d’images photoréalistes (Stable Diffusion, DALL·E 2).
+- Génération audio (Voice Diffusion).
+- Data augmentation pour la vision ou le traitement du signal.
+- Inpainting et restauration d’images.
+- Génération utlra rapise de code (à l'étude - 2025).
+
+### ✅ En résumé - Modèle de diffusion
+
+Les modèles de diffusion génèrent des données en apprenant à inverser un processus de “bruitage” progressif.
+Leur capacité à produire des échantillons de haute qualité et leur flexibilité en font aujourd’hui l’une des familles de modèles génératifs les plus puissantes.
+
+--------------------------------------------------------------------------------------------------------------
+
+## DPO
+
+### 🔍 Qu’est-ce que **DPO** (Direct Preference Optimization) ?
+
+C’est une **méthode d’entraînement basée sur des préférences**.
+Plutôt que d’apprendre à produire *la* bonne réponse, on apprend à **préférer une réponse à une autre**.
+
+### 🧠 Le principe
+
+Imagine qu’on donne au modèle deux réponses possibles à une question :
+
+- Réponse A : correcte, claire, sympa
+- Réponse B : un peu floue ou moins bonne
+
+On dit au modèle :
+> "Entre les deux, **préfère A**"
+
+Et le modèle apprend à **augmenter la probabilité de A** et **diminuer celle de B**.
+
+### 📈 En pratique, comment ça marche ?
+
+Le modèle est entraîné à **maximiser une fonction de préférence** sans passer par des récompenses RL complexes.
+Voici les étapes :
+
+1. On génère des paires de réponses : **(réponse gagnante, réponse perdante)**.
+2. On mesure la **probabilité que le modèle accorde à chacune**.
+3. On applique une **fonction de perte (loss)** qui pousse le modèle à donner plus de score à la réponse gagnante.
+
+C’est **beaucoup plus simple** que les techniques de RL classiques comme PPO (Proximal Policy Optimization), **plus stable**, et **moins coûteux**.
+
+### ⚙️ Pourquoi "Direct" ?
+
+Parce qu’on **n’a pas besoin d’un reward model externe** (comme dans RLHF) ni d’une boucle de sampling complexe :
+
+- pas de récompense à modéliser,
+- pas de policy à optimiser de manière indirecte,
+- on travaille **directement avec les préférences**.
+
+### 🧩 Dans le cas de LLaMA 4
+
+Ils l’ont utilisé en **"lightweight"** (léger), à la **fin** de leur pipeline, pour :
+
+- **corriger les cas limites**,
+- **affiner le style des réponses**,
+- **améliorer la convivialité, la clarté, ou la précision**,
+sans trop figer la créativité ou le raisonnement.
+
+### 🧪 En résumé
+
+| Terme | Explication simple |
+|------|--------------------|
+| DPO | Méthode pour dire au modèle : "préférez cette réponse plutôt qu’une autre" |
+| Avantages | Simple, stable, pas besoin d’un reward model |
+| Utilisation | Dernière étape pour affiner le comportement du modèle |
+
+--------------------------------------------------------------------------------------------------------------
+
+## Encoder Decoder
+
+### 🧩 Encoder
+
+L’**encoder** (encodeur) prend une entrée (comme une phrase) et la transforme en une **représentation interne** appelée *embedding* ou *vecteur de contexte*.
+Il extrait les caractéristiques importantes du contenu pour que le modèle puisse en comprendre le sens, sans encore produire une sortie textuelle.
+
+### 📦 Decoder
+
+Le **decoder** (décodeur) prend cette représentation interne produite par l’encoder et génère une **sortie**, souvent mot par mot.
+Par exemple, dans la traduction automatique, le decoder produit une phrase dans une autre langue en se basant sur l’information encodée.
+
+### ⚙️ Utilisation dans les transformers
+
+- **Encoder-only** (ex: BERT) : utile pour l’analyse de texte (classification, Q&A).
+- **Decoder-only** (ex: GPT) : utile pour la génération de texte.
+- **Encoder-Decoder** (ex: T5, BART) : utile pour des tâches comme la traduction ou le résumé.
+
+### ✅ En résumé - Encoder/Decoder
+
+- L’**encoder** comprend le texte.
+- Le **decoder** génère une réponse.
+
+Ce duo est essentiel pour structurer les flux de traitement dans de nombreux modèles d’IA modernes.
+
+--------------------------------------------------------------------------------------------------------------
+
+## Embedding vector
+
+Un concept important en Machine Learning et dans l’utilisation des modèles de langage comme les LLM (Large Language Models) est celui d’**embedding vector** ou **représentation vectorielle**.
+
+### 🔍 Embedding vector : qu’est-ce que c’est ?
+
+Un embedding vector est une manière de représenter des données complexes (comme des mots, des phrases ou même des images) sous la forme de vecteurs dans un espace numérique multidimensionnel.
+L’idée est de transformer des informations qualitatives en une représentation numérique qui capture les relations entre ces informations.
+
+### 🧠 Pourquoi utilise-t-on des embeddings ?
+
+Dans des domaines comme le traitement du langage naturel (NLP), les mots ou les phrases ne sont pas directement compréhensibles pour un modèle mathématique.
+On a donc besoin d’une méthode pour convertir ces données textuelles en nombres.
+Mais ce n’est pas juste une conversion arbitraire : les embeddings sont conçus de manière à ce que des éléments similaires (par exemple, des mots qui apparaissent souvent ensemble ou qui ont un sens proche) soient proches dans l’espace vectoriel.
+Cela permet au modèle d’IA d’identifier des patterns et des relations, facilitant ainsi l’apprentissage et la prise de décisions.
+
+### 📦 Un exemple concret
+
+Imaginons qu’on travaille sur des embeddings de mots :
+
+- Le mot « roi » pourrait être représenté par le vecteur [0.2, 0.8, 0.1, …].
+- Le mot « reine » par [0.2, 0.75, 0.12, …].
+- Et le mot « voiture » par [0.5, 0.1, 0.9, …].
+
+Quand on regarde cet espace vectoriel, on peut observer que « roi » et « reine » sont proches l’un de l’autre, car ils partagent une relation conceptuelle, alors que « voiture » est beaucoup plus éloigné.
+Cela donne au modèle une capacité à comprendre les similarités sémantiques, même si ces relations n’étaient pas explicitement codées.
+
+### ⚙️ Applications
+
+Les embeddings sont utilisés dans :
+
+- Les moteurs de recherche (par exemple, pour trouver des documents similaires à une requête).
+- La traduction automatique (pour relier des concepts similaires entre langues).
+- Les recommandations (identifier des utilisateurs ou produits similaires).
+- Et bien sûr, dans les LLM pour comprendre et générer du langage de manière plus cohérente et pertinente.
+
+En résumé, l’embedding vector est un des piliers fondamentaux permettant aux systèmes d’IA de représenter et de manipuler des informations complexes de façon numérique, tout en capturant les relations et les similarités qui se trouvent dans les données.
+
+--------------------------------------------------------------------------------------------------------------
+
+## Fine-tuning
+
+### 🧩 Qu’est-ce que le fine-tuning ?
+
+Le fine-tuning (ou ajustement fin) consiste à prendre un modèle pré-entraîné (comme GPT ou BERT) et à le réentraîner légèrement sur un jeu de données spécifique pour l’adapter à une tâche particulière.
+Cela permet de conserver les capacités générales du modèle tout en le spécialisant.
+
+### 🔍 Embdding vector: Pourquoi l’utiliser ?
+
+Plutôt que d’entraîner un modèle depuis zéro (ce qui est très coûteux en données et en puissance), on peut affiner un modèle existant avec des exemples spécialisés.
+Par exemple :
+
+- Adapter un LLM généraliste à du vocabulaire juridique ou médical.
+- Entraîner un chatbot pour une entreprise avec ses propres données.
+
+### 🧠 fine-tuning : Comment ça fonctionne ?
+
+On fournit au modèle des **paires entrée → sortie spécifiques à la tâche**, et on l’entraîne sur ces exemples avec un taux d’apprentissage faible pour ne pas « oublier » ce qu’il a déjà appris.
+Cela permet d’améliorer ses performances sur un domaine précis.
+
+Le fine-tuning est un outil puissant pour créer des IA adaptées à des usages concrets, tout en économisant temps et ressources.
+
+--------------------------------------------------------------------------------------------------------------
+
+## Quantization
+
+La **quantization** (ou quantification), une technique utilisée pour rendre les modèles de deep learning plus efficaces.
+
+### ⚙️ Qu’est-ce que la quantization ?
+
+La quantization consiste à **convertir les poids et/ou les activations d’un modèle de haute précision** (par exemple en 32 bits flottants, float32) **vers une précision plus faible** (comme int8 ou float16), tout en maintenant au mieux ses performances.
+
+### 🎯 Pourquoi le faire ?
+
+- **Réduction de la taille mémoire** : un modèle quantifié occupe beaucoup moins d’espace.
+- **Accélération des inférences** : les opérations sur des entiers ou des flottants réduits sont plus rapides sur du matériel optimisé (GPU, TPU, CPU ARM).
+- **Efficacité énergétique** : utile pour le déploiement sur des appareils embarqués ou mobiles.
+
+### 🧠 Types de quantization
+
+- **Post-training quantization** : on quantifie un modèle déjà entraîné.
+- **Quantization-aware training (QAT)** : le modèle est entraîné en simulant la quantification, ce qui permet une meilleure précision après compression.
+- **Dynamic / Static quantization** : selon si l’échelle des valeurs est ajustée à la volée ou pré-calculée.
+
+### 📉 Inconvénients
+
+- Peut dégrader les performances si mal calibrée.
+- Certaines architectures ou opérations sont plus sensibles à la perte de précision.
+
+### ✅ En résumé - Quantization
+
+La quantization est une technique d’optimisation matérielle qui permet de réduire les coûts de calcul et de mémoire d’un modèle, souvent avec une très légère perte de précision.
+Elle est essentielle pour rendre les LLMs plus accessibles en production ou sur des dispositifs contraints.
+
+--------------------------------------------------------------------------------------------------------------
+
+## Layer Normalization
+
+Les Layer Normalization (couche de normalisations), sont très utilisés dans les architectures de type transformer.
+
+### ⚙️ Qu’est-ce que la Layer Normalization ?
+
+La **LayerNorm** est une opération qui normalise les activations d’une même couche pour chaque échantillon, en recentrant et redimensionnant les valeurs afin qu’elles aient **moyenne nulle** et **variance unitaire**.
+
+![layer-normalization](./images/img-dico-ia/normalization_layer.png "layer-normalization")
+
+### 🧠 Pourquoi l’utiliser ? - Layer Normalization
+
+- **Stabilité de l’entraînement** : réduit la covariance shift interne, aidant les gradients à rester bien conditionnés.
+- **Indépendance du batch size** : contrairement à la **BatchNorm**, **LayerNorm** ne dépend que de chaque échantillon individuellement, ce qui est crucial pour les modèles séquentiels ou en inference découplée.
+- **Rapidité de convergence** : facilite et accélère l’apprentissage, en particulier dans les réseaux profonds comme les transformers.
+
+### 🔗 Interaction avec les connexions résiduelles
+
+Dans les transformers, on place souvent la LayerNorm **avant** et/ou **après** chaque **bloc d’attention** ou de **feed-forward**, à l’intérieur de la connexion résiduelle (residual connection) :
+
+Output = LayerNorm(x + Sublayer(x))
+
+Cela permet de stabiliser le passage d’informations tout en conservant l’identité x et en ajoutant la transformation Sublayer(x).
+
+### ✅ En résumé - Layer Normalization
+
+La Layer Normalization est une normalisation interne à chaque échantillon qui stabilise et accélère l’entraînement des modèles profonds, sans dépendre de la taille du batch.
+Elle est indispensable dans les architectures modernes de LLM pour garantir des gradients stables et des performances optimales.
+
+--------------------------------------------------------------------------------------------------------------
+
+## LoRA
+
+LoRA - Low-Rank Adaptation
+
+### ⚙️ Qu’est-ce que LoRA ?
+
+LoRA est une technique de fine-tuning qui permet d’adapter un LLM sans devoir modifier tous ses paramètres.
+Elle **introduit de petites matrices d’adaptation à faible rang dans certaines couches** (souvent les couches d’attention), tout en laissant les poids originaux du modèle gelés (non modifiés).
+
+### 🧠 Pourquoi c’est utile ?
+
+- **Économie de mémoire** : LoRA réduit drastiquement le nombre de paramètres à entraîner.
+- **Vitesse** : moins de calculs, donc fine-tuning plus rapide.
+- **Modularité** : les adaptations LoRA peuvent être sauvegardées et réutilisées indépendamment du modèle de base.
+
+### 🔧 Comment ça marche ? - LoRA
+
+1. On décompose une matrice de poids (W) en deux petites matrices (A) et (B) de rang réduit : Δ(W)=(A)(B)
+2. On insère cette adaptation dans le calcul du modèle : (W)adapté = (W) + Δ(W)
+3. On entraîne uniquement (A) et (B), pas (W).
+
+### 📦 Cas d’usage - LoRA
+
+- Adapter un modèle LLM à un domaine spécifique (juridique, médical, etc.).
+- Créer des variantes légères et personnalisées du même modèle de base.
+- Fusionner plusieurs LoRA pour obtenir un comportement combiné.
+
+### ✅ En résumé - LoRa
+
+Un **LoRA** permet d’affiner un LLM en ajoutant des petites matrices adaptatives sans toucher aux poids d’origine.
+Cela rend l’adaptation plus légère, plus rapide et plus flexible — un outil puissant pour déployer des IA personnalisées à grande échelle.
+
+--------------------------------------------------------------------------------------------------------------
+
+## Loss function
+
+La **fonction de perte** (loss function) est essentiel à l’apprentissage des modèles d’IA.
+
+### 🎯 Définition
+
+La fonction de perte mesure l’**écart entre la sortie prédite par le modèle et la véritable sortie attendue** (la “vérité terrain”).
+Elle fournit une valeur numérique qui guide l’apprentissage : plus cette valeur est élevée, plus l’erreur est grande.
+
+### 🧠 Rôle dans l’apprentissage
+
+Lors de l’entraînement :
+
+1. Le modèle fait une prédiction.
+2. La fonction de perte calcule l’erreur.
+3. Cette erreur est utilisée pour ajuster les poids via la descente de gradient.
+
+### 📦 Exemples courants
+
+- **MSE (Mean Squared Error)** : erreurs quadratiques moyennes (utilisée en régression).
+- **Cross-entropy** : mesure la distance entre deux distributions de probabilité (utilisée en classification, y compris dans les LLM).
+- **KL divergence** : évalue la différence entre une distribution prédite et une distribution cible.
+
+### ✅ En résumé - Loss function
+
+La fonction de perte est la boussole du modèle pendant l’apprentissage : elle lui indique dans quelle direction corriger ses paramètres pour s’améliorer.
+Sans elle, il n’y aurait aucun signal d’apprentissage.
+
+--------------------------------------------------------------------------------------------------------------
+
+## GAN
+
+GAN - Generative Adversarial Network
+
+### 🎭 Qu’est-ce qu’un GAN ?
+
+Un **GAN** est un modèle génératif constitué de deux réseaux en compétition :
+
+- Le **générateur** (G) qui apprend à produire de nouvelles données (images, sons, etc.) à partir d’un bruit aléatoire.
+- Le **discriminateur** (D) qui apprend à distinguer les données réelles (venant du dataset) des données synthétiques (provenant du générateur).
+
+### 🔄 Mécanisme d’entraînement
+
+- **Phase 1** : le générateur produit un échantillon.
+- **Phase 2** : le discriminateur évalue cet échantillon et donne un score de « réalité ».
+- **Phase 3** :
+  - On met à jour D pour qu’il améliore sa capacité à ne pas se faire duper.
+  - On met à jour G pour qu’il produise des échantillons de plus en plus proches des vraies données, c’est-à-dire qui trompent D.
+
+Cette **adversarial training** (entraînement antagoniste) se poursuit jusqu’à ce que G produise des données suffisamment réalistes pour « casser » D la majorité du temps.
+
+### 🎨 Pourquoi c’est important ?
+
+- **Génération haute qualité** : les GANs sont capables de créer des images photoréalistes, de transformer des styles (style transfer) ou de compléter des zones manquantes.
+- **Flexibilité** : on peut conditionner G pour générer selon des attributs (visages souriants, objets spécifiques…).
+- **Applications variées** : art génératif, data augmentation, super-résolution d’images, simulation de données médicales…
+
+### ✅ En résumé - GAN
+
+Les GANs exploitent une dynamique compétitive entre un générateur et un discriminateur pour apprendre à synthétiser des données réalistes.
+
+Ce duel interne pousse le générateur à sans cesse perfectionner ses créations, ouvrant la voie à des avancées spectaculaires en génération de contenus.
+
+--------------------------------------------------------------------------------------------------------------
+
+## Gradient descend
+
+Le concept de gradient descent (descente de gradient) est l’un des piliers de l’apprentissage en machine learning.
+
+### ⛰️ Qu’est-ce que le gradient descent ?
+
+La descente de gradient est un algorithme d’optimisation utilisé pour ajuster les paramètres d’un modèle afin de **minimiser une fonction de perte**.
+Cette **fonction mesure l’erreur entre les prédictions du modèle et les résultats attendus**.
+
+### 🧮 Comment ça fonctionne ?
+
+1. Le modèle fait une **prédiction** à partir de ses paramètres actuels.
+2. On calcule la **fonction de perte**.
+3. On évalue le gradient de cette perte par rapport à chaque paramètre (c’est la direction dans laquelle la perte augmente le plus vite).
+4. On met à jour chaque paramètre dans la direction opposée à ce gradient, avec une petite "marche" (le learning rate).
+
+Ce processus est répété sur de nombreux exemples, jusqu’à ce que la perte soit suffisamment faible ou stable.
+
+### 🛠️ Variantes principales
+
+- **Batch gradient descent** : on utilise tout le dataset à chaque mise à jour (lent).
+- **Stochastic gradient descent (SGD)** : on met à jour à chaque exemple (bruyant, rapide).
+- **Mini-batch SGD** : compromis courant, avec des petits groupes d’exemples.
+
+### ✅ En résumé - Gadient descent
+
+La descente de gradient est le moteur d’apprentissage de presque tous les modèles modernes d’IA. C’est elle qui ajuste les milliards de paramètres d’un LLM comme GPT pour qu’il devienne progressivement plus performant.
+
+--------------------------------------------------------------------------------------------------------------
+
+## Latent space
+
+Le concept de **latent space** ou **espace latent**, un pilier dans de nombreux modèles génératifs et d’apprentissage profond.
+
+### 🌌 Qu’est-ce que l’espace latent ?
+
+L’espace latent est un **espace mathématique** (souvent de dimension réduite) **dans lequel les données réelles** (images, textes, sons...) **sont projetées sous une forme compressée mais significative**.
+C’est une représentation abstraite où chaque point encode des caractéristiques importantes, mais non directement observables.
+
+### 🧠 À quoi ça sert ?
+
+L’idée est de résumer l’information : plutôt que de manipuler des données brutes très complexes, on travaille sur une version compacte qui conserve l’essentiel.
+
+Exemples :
+
+- En NLP, un mot ou une phrase peut être représenté par un vecteur dans l’espace latent.
+- En vision, une image est transformée en vecteur qui encode le type d’objet, sa position, etc.
+
+### 🧩 Utilisation typique
+
+- Dans les **autoencodeurs**, l’encodeur projette les données dans un espace latent, le décodeur les reconstruit à partir de là.
+- Les **GANs** et **VAEs** génèrent de nouvelles données en échantillonnant des points dans l’espace latent.
+
+Les LLMs utilisent implicitement un espace latent pour comprendre et générer du langage.
+
+### ✅ En résumé - Latent space
+
+**L’espace latent est un monde mathématique invisible dans lequel l’IA apprend à représenter et manipuler les idées, les formes et les concepts au-delà des données brutes**.
+
+--------------------------------------------------------------------------------------------------------------
+
+## Latent space vs search space
+
+Le **search space** (espace de recherche) et l’espace latent sont deux notions proches en ce qu’ils décrivent tous deux des “espaces” mathématiques où l’on va chercher des solutions, mais ils servent des objectifs différents :
+
+### 1. Définition du search space
+
+- C’est l’ensemble **explicite** de **toutes les solutions possibles qu’un algorithme peut explorer pour résoudre un problème donné**.
+- Par exemple, dans l’optimisation d’hyperparamètres d’un modèle, le search space peut être :
+  - le choix de l’apprentissage (n) dans [10−5,10−1],
+  - le nombre de couches dans {2,3,4,5},
+  - le type de fonction d’activation dans {(\text{ReLU, tanh, sigmoid}}}.
+- Les méthodes de recherche (grid search, random search, Bayesian optimization…) parcourent cet espace pour trouver la combinaison qui minimise la fonction de perte.
+
+### 2. Comparaison avec l’espace latent
+
+|               | Espace latent                                    | Search space                                    |
+|---------------|--------------------------------------------------|--------------------------------------------------|
+| **Nature**    | **Continu**, généralement à dimension réduite, appris automatiquement par un modèle. | **Défini à la main**, peut être discret, continu ou mixte, selon la tâche. |
+| **But**       | Encoder la structure sous-jacente des données pour la reconstruction ou la génération. | Explorer toutes les configurations possibles pour optimiser un critère (perte, score, etc.). |
+| **Exploration**  | On échantillonne souvent de façon aléatoire (VAEs) ou guidée (GANs) pour générer de nouvelles données. | On parcourt systématiquement ou de façon intelligente pour trouver une configuration optimale. |
+
+#### Exemple - Espace latent
+
+- Vecteurs de dimension 128 où chaque point code un visage dans un VAE.
+- Représentation compression d’une phrase dans un autoencodeur.
+
+#### Exemple - Search space
+
+- Grille de valeurs d’apprentissage et de régularisation pour entraîner un réseau.
+- Arbre de décisions : ensemble de toutes les structures d’arbre possibles.
+
+### 3. Quelle différence ?
+
+- Dans les deux cas on “cherche” quelque chose dans un espace mathématique.
+- Mais l’**espace latent** est avant tout une **construction interne**, apprise par le réseau pour représenter les données efficacement.
+- Tandis que le **search space** est une **enveloppe externe**, définie par l’utilisateur ou le concepteur de l’algorithme pour guider l’optimisation.
+
+### ✅ En résumé - Latent space vs search space
+
+- **Espace latent** : lieu abstrait appris, où chaque point code un élément de données (images, textes…) de façon compressée et structurée.
+- **Search space** : ensemble des solutions potentielles (hyperparamètres, architectures…), défini à l’avance, que l’on explore pour optimiser les performances.
+
+--------------------------------------------------------------------------------------------------------------
+
+## Learning-rate
+
+Le « taux d’apprentissage » (ou learning rate en anglais) est un paramètre clé lors de l’entraînement d’un modèle de machine learning. **Il détermine à quelle vitesse le modèle ajuste ses poids en réponse aux erreurs qu’il commet sur les exemples du jeu de données**.
+
+### 🧠 Pourquoi utiliser un taux d’apprentissage faible lors du fine-tuning ?
+
+Quand on commence avec un modèle déjà pré-entraîné, ce modèle a déjà appris beaucoup de choses utiles à partir de grandes quantités de données générales.
+
+Si on utilisait un taux d’apprentissage élevé, les ajustements apportés aux poids pourraient être trop importants, risquant d’effacer ou de déstabiliser tout ce que le modèle a appris auparavant.
+Ce phénomène est parfois appelé **catastrophic forgetting** (oubli catastrophique) : le modèle « oublie » ses connaissances initiales parce qu’on l’a trop modifié.
+
+En utilisant un taux d’apprentissage faible, on ajuste les poids du modèle de manière très graduelle.
+Cela permet d’introduire de nouvelles connaissances ou de spécialiser le modèle sur un domaine spécifique, sans perturber les connaissances déjà acquises.
+
+On pourrait comparer cela à un musicien qui, après des années à maîtriser son instrument, apprend à jouer un nouveau style musical : il n’a pas besoin de tout réapprendre depuis zéro, mais plutôt d’apporter des ajustements subtils à sa technique existante.
+
+--------------------------------------------------------------------------------------------------------------
+
+## MLP
+
+Le **MLP** (Multilayer Perceptron) est une architecture de base dans le deep learning.
+
+### 🧱 Qu’est-ce qu’un MLP ?
+
+Un **MLP** est un **réseau de neurones entièrement connecté composé de plusieurs couches linéaires (dense layers), intercalées avec des fonctions d’activation non linéaires**.
+C’est l’archétype des réseaux **feedforward**.
+
+### 🧠 Structure typique - MLP
+
+- **Input layer** : reçoit les données (ex. : vecteur de caractéristiques).
+- **Hidden layers** : plusieurs couches de neurones (chaque neurone étant connecté à tous ceux de la couche précédente), suivies d’activations comme ReLU ou Tanh.
+- **Output layer** : produit la sortie finale, souvent une classification ou une régression.
+
+### 🔍 Usage - MLP
+
+- Modèles de base pour la **classification**, la **régression**, ou comme composants dans des architectures plus complexes (transformers, autoencodeurs).
+- En NLP, un MLP est souvent utilisé après **les blocs d’attention**, dans la partie feedforward d’un transformer.
+
+### ✅ En résumé - MLP
+
+Le MLP est une structure simple mais puissante, composée de plusieurs couches de neurones denses.
+Elle permet de modéliser des fonctions complexes et sert de brique de base dans de nombreuses architectures d’IA modernes.
+
+--------------------------------------------------------------------------------------------------------------
+
+## Multi-head-attention
+
+### 🔍 Qu’est-ce que la multi-head attention ?
+
+**Dans un modèle transformer, l’attention permet au modèle de se concentrer sur différentes parties du texte en fonction du contexte.**
+
+La multi-head attention consiste à exécuter plusieurs "attentions" en parallèle, chacune avec des poids différents, pour capturer plusieurs types de relations entre les mots.
+
+### 🧠 Pourquoi plusieurs têtes ?
+
+Chaque tête d’attention peut apprendre une relation différente :
+
+- Une tête peut apprendre à détecter les relations grammaticales.
+- Une autre à comprendre le contexte thématique.
+- Une autre encore à suivre des relations temporelles ou de co-référence.
+
+En combinant toutes ces perspectives, le modèle obtient une compréhension plus fine du texte.
+
+### ⚙️ multi-head-attention : Comment ça fonctionne ?
+
+- Le texte est projeté en plusieurs sous-espaces vectoriels.
+- Une attention est calculée dans chaque espace (chaque tête).
+- Les résultats sont concaténés et transformés pour produire la sortie.
+
+### ✅ En résumé - Multi-head-attention
+
+La multi-head attention permet à un modèle de regarder un texte sous différents angles simultanément, ce qui améliore la richesse de l’analyse contextuelle.
+C’est l’un des piliers de la puissance des LLM modernes.
+
+--------------------------------------------------------------------------------------------------------------
+
+## Prompt engineering
+
+### 🔍 Qu’est-ce que le prompt engineering ?
+
+Le prompt engineering est l’art de concevoir des instructions (ou prompts) efficaces et ciblées pour interagir avec un modèle de langage comme GPT.
+Ces modèles sont sensibles à la formulation des requêtes, donc bien structurer une question ou un contexte peut grandement influencer la qualité et la pertinence de la réponse générée.
+
+### 🧠 Pourquoi c’est important ? - Prompt engineering
+
+Même si un modèle est très performant, il peut donner des réponses imprécises ou hors sujet si le prompt est vague ou mal formulé.
+En affinant le prompt, on peut :
+
+- guider le modèle vers un certain style de réponse,
+- limiter les hallucinations,
+- obtenir des réponses plus concises, factuelles ou adaptées au contexte.
+
+#### 🧪 Exemples
+
+- Prompt vague : « Explique l’IA. »
+- Prompt efficace : « En une phrase simple, explique à un enfant de 10 ans ce qu’est l’intelligence artificielle. »
+
+### ✅ Utilisations
+
+Le prompt engineering est devenu une compétence clé pour :
+
+- les développeurs d’applications IA,
+- les chercheurs,
+- les créateurs de contenu,
+- les équipes UX cherchant à exploiter les LLM de manière fiable et contrôlée.
+
+C’est une technique puissante et accessible qui permet d’exploiter tout le potentiel des LLM sans nécessiter de modifier le modèle lui-même.
+
+--------------------------------------------------------------------------------------------------------------
+
+## Sampling
+
+### 🎯 Qu’est-ce que le sampling ?
+
+Le sampling (échantillonnage) est le **processus** par lequel **un modèle de langage choisit le ou les prochains tokens à générer**, à partir des probabilités qu’il a calculées.
+C’est une étape cruciale pour passer d’une distribution prédite à un texte concret.
+
+### 🧠 Pourquoi ne pas simplement prendre le token le plus probable ?
+
+Toujours choisir le token le plus probable (greedy decoding) rend les textes :
+
+- répétitifs,
+- peu créatifs,
+- parfois incohérents à long terme.
+
+Le sampling introduit de la variabilité, ce qui permet :
+
+- des réponses plus naturelles,
+- une meilleure couverture des possibles,
+- une adaptation au ton ou au style désiré.
+
+### 🔢 Techniques courantes
+
+- **Top-k sampling** : on **garde seulement les k tokens les plus probables**, puis on choisit au **hasard** parmi eux.
+- **Top-p sampling** (aussi appelé nucleus sampling) : on garde les tokens qui cumulent un certain pourcentage p de probabilité (ex : 90%) et on choisit parmi eux.
+- **Temperature scaling** : on ajuste la "concentration" des probabilités. Une température basse (ex : 0.2) rend le modèle plus sûr et répétitif, une température haute (ex : 1.0 ou plus) le rend plus créatif, mais parfois incohérent.
+
+### ✅ En résumé - Sampling
+
+Le sampling est le mécanisme qui transforme les prédictions du modèle en texte lisible.
+Selon la méthode utilisée, on peut obtenir des résultats très déterministes ou très variés, selon les besoins de l’utilisateur.
+
+--------------------------------------------------------------------------------------------------------------
+
+## Sampling vs Transformer
+
+Le **sampling** n’est pas un bloc physique intégré à l’architecture transformer elle-même, mais plutôt une p**rocédure de décodage qui s’applique après que le transformer ait produit ses scores**.
+
+### 1. Sortie du transformer
+
+1. Le transformer (decoder-only ou encoder-decoder) traite les tokens d’entrée à travers ses couches d’**auto-attention** et **feed-forward**.
+2. Après la dernière couche, on passe la représentation interne de chaque position dans une **couche linéaire** (projection) qui donne un vecteur de logits de taille ∣𝑉∣ (taille du vocabulaire).
+3. On applique un softmax sur ces logits pour obtenir une distribution de probabilité 𝑃(token 𝑖 ∣ contexte).
+logits = Wh + b ⟶ P = softmax(logits)
+
+### 2. Décodage / Sampling
+
+1. Décodage déterministe (greedy, beam search) : on choisit les tokens de plus haute probabilité, enchaînés selon la stratégie.
+2. Échantillonnage (sampling) : on tire au hasard un token à partir de la distribution 𝑃, éventuellement restreinte par top-k, top-p, ou ajustée par une température.
+3. Cette étape de sampling est donc externe au réseau ; on ne “recalcule” rien dans le transformer, on se contente de tirer (échantillonner) un index selon 𝑃.
+
+### 3. Pourquoi ce découpage ?
+
+**Modularité** : on peut facilement tester plusieurs stratégies de génération (greedy, beam, top-k, top-p…) sans toucher aux poids du modèle.
+**Simplicité d’implémentation** : le transformer produit des probabilités, et n’importe quel code client (API, boucle Python…) peut ensuite appliquer le sampling de la manière souhaitée.
+
+### ✅ En résumé - Sampling vs Transformer
+
+Le transformer se charge de produire, pour chaque position, une distribution sur les tokens. Le sampling est un algorithme de décodage, indépendant de l’architecture, qui choisit un token à partir de cette distribution pour générer le texte final.
+
+--------------------------------------------------------------------------------------------------------------
+
+## Tokens
+
+### 🔤 Qu’est-ce qu’un *token* ?
+
+Un **token** est une unité de texte utilisée par les modèles de langage.
+Ce n’est **pas forcément un mot** : il peut s’agir d’un mot entier, d’un morceau de mot, ou même de signes de ponctuation.
+Par exemple :
+
+- « chat » = 1 token
+- « internationalisation » = 3 tokens
+- « ! » = 1 token
+
+Les LLM ne traitent pas directement des mots, mais des séquences de tokens.
+
+### 📏 Pourquoi les tokens comptent ?
+
+Chaque modèle a une **limite de tokens** qu’il peut traiter dans une fenêtre de contexte.
+
+Cette limite influence :
+
+- la longueur maximale d’une entrée ou d’une réponse,
+- les coûts (dans les API comme OpenAI, la facturation est basée sur le nombre de tokens),
+- les performances (plus de tokens = plus de calculs).
+
+### 🧠 Tokenization
+
+Avant d’être traitée, une phrase est **tokenisée**, c’est-à-dire découpée en tokens selon un algorithme spécifique (comme *Byte-Pair Encoding* ou *Unigram Language Model*).
+Cela permet une analyse fine du texte par le modèle.
+
+### ✅ En résumé - Tokens
+
+Un *token* est l’unité de base du langage pour un LLM.
+Comprendre ce qu’est un token est essentiel pour bien utiliser les modèles, évaluer les coûts et optimiser les prompts.
+
+--------------------------------------------------------------------------------------------------------------
+
+## Transformer
+
+### 🧠 Qu’est-ce qu’un transformer ?
+
+Un **transformer est une architecture de réseau de neurones** introduite par Google en 2017 dans l'article Attention is All You Need.
+Elle a révolutionné le traitement du langage naturel (NLP) en remplaçant les architectures séquentielles (comme les RNN ou LSTM) par une approche parallèle plus efficace.
+
+### ⚙️Les composants clés
+
+- **Embedding** : transforme les mots en vecteurs numériques.
+- **Positional Encoding**: ajoute de l’information sur la position des mots dans la phrase.
+- **Attention mechanism** : permet au modèle de pondérer l’importance de chaque mot du contexte.
+- **Multi-head attention** : le modèle regarde plusieurs types de relations en parallèle.
+- **Feed-forward layers** : couches denses qui traitent les représentations obtenues.
+- **Layer normalization & résidus** : stabilisent l’apprentissage.
+
+### ⚙️Les composants clés - v2
+
+- **Embedding** : conversion des tokens en vecteurs.
+- **Positional encoding** : ajout d’une information sur la position des tokens dans la séquence (puisque le modèle ne traite pas les entrées séquentiellement).
+- **Self-attention** : chaque token « regarde » tous les autres pour capturer le contexte global.
+- **Feedforward** : chaque token passe par un MLP identique.
+- **LayerNorm** + **résidus** : stabilisation et accélération de l’apprentissage.
+
+### 🧠 Variants d’architecture
+
+- **Encoder-only** : ex. BERT (analyse de texte).
+- **Decoder-only** : ex. GPT (génération de texte).
+- **Encoder-decoder** : ex. T5, BART (traduction, résumé).
+
+### 📚 Pourquoi c’est important ?
+
+Les transformers sont à la base de modèles comme BERT, GPT, T5, et bien d’autres.
+Leur capacité à traiter un texte entier en parallèle les rend beaucoup plus rapides et puissants que les modèles séquentiels.
+
+### ✅ En résumé - Transformer
+
+Le **Transformer** est l’architecture cœur des LLM modernes, avec un fonctionnement fondé sur l’attention plutôt que sur l’ordre strict des mots.
+Cela leur permet de mieux comprendre le contexte global d’une séquence.
+
+Le **Transformer** a révolutionné l’IA en remplaçant les réseaux séquentiels par une architecture parallélisable, plus efficace, capable de traiter des séquences longues tout en capturant un riche contexte global via l’attention.
+C’est la colonne vertébrale de tous les grands modèles de langage contemporains.
+
+--------------------------------------------------------------------------------------------------------------
+
+  </textarea>
+ 
+  <div id="content" class="content"></div>
+
+
+<br>
+
+<hr>
+
+<br>
+
+
+  </main>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const markdownText = document.getElementById('markdown').value.trim();
+      const contentDiv = document.getElementById('content');
+      contentDiv.innerHTML = marked.parse(markdownText);
+    });
+  </script>
+</body>
+</html>

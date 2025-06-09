@@ -1,0 +1,56 @@
+
+body{
+   background-color: #ededed;
+}
+
+main{
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   flex-direction: column;
+   gap: 30px;
+}    
+
+img.img-log{
+width: 120px;   
+}
+
+button{
+   width: 300px;
+}
+
+#content-log{
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       gap: 12px;
+       flex-wrap: wrap;
+       flex-direction: column;
+       padding-top: 80px;
+   }
+
+#content-index{
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       gap: 24px;
+       flex-wrap: wrap;
+       flex-direction: column;
+       padding-top: 280px;
+   }
+
+#content-index button{
+   background-color: brown;
+   color: white;
+   text-align: left;
+   font-size: large;
+   font-weight: 600;
+   }
+
+.button.dark, .button.error, .button.primary, .button.secondary, .button.success, [type=submit] {
+   background-color: brown;
+}
+
+input:not([type=checkbox],[type=radio],[type=submit],[type=color],[type=button],[type=reset]), select, textarea, textarea[type=text]{
+   width: 300px ;
+}
