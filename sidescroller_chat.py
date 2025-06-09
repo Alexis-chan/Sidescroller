@@ -34,8 +34,6 @@ SCROLL_EDGE = WIDTH // 3  # déclenche le scrolling quand le joueur s'en approch
 # Couleurs (R, G, B)
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
-BLUE = (66, 135, 245)   # chat
-RED = (220, 30, 30)      # chiens
 GREY = (80, 80, 80)      # plateformes
 
 pygame.init()
@@ -45,24 +43,45 @@ pygame.display.set_caption("Chat vs Chiens – Sidescroller")
 font = pygame.font.SysFont(None, 48)
 score_font = pygame.font.SysFont(None, 36)
 
+# Chargement des images
+CAT_IMG_PATH = "Imagesidescroller/ChatGPT Image 9 juin 2025, 20_09_08.png"
+DOG_IMG_PATH = "Imagesidescroller/ChatGPT Image 9 juin 2025, 20_09_10.png"
+CAT_SHEET_PATH = "Imagesidescroller/ChatGPT Image 9 juin 2025, 20_09_12.png"
+BG_IMG_PATH = "Imagesidescroller/ChatGPT Image 9 juin 2025, 20_21_54.png"
+
+cat_idle_img = pygame.transform.scale(pygame.image.load(CAT_IMG_PATH).convert_alpha(), (40, 50))
+dog_img = pygame.transform.scale(pygame.image.load(DOG_IMG_PATH).convert_alpha(), (50, 40))
+cat_sheet = pygame.image.load(CAT_SHEET_PATH).convert_alpha()
+background = pygame.transform.scale(pygame.image.load(BG_IMG_PATH).convert(), (WIDTH, HEIGHT))
+
 # -----------------------
 # Classes principales
 # -----------------------
 class Entity(pygame.sprite.Sprite):
-    def __init__(self, x: int, y: int, w: int, h: int, color):
+    def __init__(self, x: int, y: int, w: int, h: int):
         super().__init__()
-        self.image = pygame.Surface((w, h))
-        self.image.fill(color)
+        self.image = pygame.Surface((w, h), pygame.SRCALPHA)
         self.rect = self.image.get_rect(topleft=(x, y))
         self.vx = 0
         self.vy = 0
 
 class Player(Entity):
     def __init__(self, x, y):
-        super().__init__(x, y, 40, 50, BLUE)
+        super().__init__(x, y, 40, 50)
         self.on_ground = False
         self.touching_left_wall = False
         self.touching_right_wall = False
+        # Animation
+        sheet_w, sheet_h = cat_sheet.get_size()
+        fw = sheet_w // 4
+        fh = sheet_h // 4
+        self.walk_frames = [pygame.transform.scale(cat_sheet.subsurface(pygame.Rect(i*fw, 0, fw, fh)), (40, 50)) for i in range(4)]
+        self.jump_frame = pygame.transform.scale(cat_sheet.subsurface(pygame.Rect(0, fh, fw, fh)), (40, 50))
+        self.wall_frame = pygame.transform.scale(cat_sheet.subsurface(pygame.Rect(0, 2*fh, fw, fh)), (40, 50))
+        self.idle_frame = cat_idle_img
+        self.anim_index = 0
+        self.direction = 1
+        self.image = self.idle_frame
 
     def update(self, platforms: List[pygame.Rect]):
         keys = pygame.key.get_pressed()
@@ -83,10 +102,14 @@ class Player(Entity):
                 self.vx = -WALL_JUMP_POWER_X
                 self.vy = WALL_JUMP_POWER_Y
 
+        if self.vx != 0:
+            self.direction = 1 if self.vx > 0 else -1
+
         # Appliquer la gravité
         self.vy += GRAVITY
         if self.vy > 20:
             self.vy = 20
+
         # Déplacement horizontal puis résolution de collision latérale
         self.rect.x += self.vx
         self.touching_left_wall = self.touching_right_wall = False
@@ -98,6 +121,7 @@ class Player(Entity):
                 elif self.vx < 0:
                     self.rect.left = plat.right
                     self.touching_left_wall = True
+
         # Déplacement vertical puis résolution de collision verticale
         self.rect.y += self.vy
         self.on_ground = False
@@ -111,9 +135,26 @@ class Player(Entity):
                     self.rect.top = plat.bottom
                     self.vy = 0
 
+        self.animate()
+
+    def animate(self):
+        if not self.on_ground:
+            if self.touching_left_wall or self.touching_right_wall:
+                frame = self.wall_frame
+            else:
+                frame = self.jump_frame
+        elif self.vx != 0:
+            self.anim_index = (self.anim_index + 1) % (len(self.walk_frames) * 6)
+            frame = self.walk_frames[self.anim_index // 6]
+        else:
+            frame = self.idle_frame
+
+        self.image = pygame.transform.flip(frame, self.direction < 0, False)
+
 class Dog(Entity):
     def __init__(self, x, y, left_bound, right_bound):
-        super().__init__(x, y, 50, 40, RED)
+        super().__init__(x, y, 50, 40)
+        self.image = dog_img
         self.left_bound = left_bound
         self.right_bound = right_bound
         self.vx = random.choice([-2, 2])
@@ -161,6 +202,8 @@ class Level:
             self.enemies.add(Dog(x, y, l, r))
 
     def draw(self, surface, camera_x):
+        # Dessiner l'arrière-plan
+        surface.blit(background, (0, 0))
         # Dessiner plateformes
         for plat in self.platforms:
             pygame.draw.rect(surface, GREY, pygame.Rect(plat.x - camera_x, plat.y, plat.width, plat.height))
@@ -222,7 +265,6 @@ while True:
     # -------------------------------------
     # Rendu
     # -------------------------------------
-    screen.fill(WHITE)
     level.draw(screen, camera_x)
     screen.blit(player.image, (player.rect.x - camera_x, player.rect.y))
     score_surf = score_font.render(f"Score : {score}", True, BLACK)
