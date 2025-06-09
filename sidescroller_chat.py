@@ -43,6 +43,7 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 clock = pygame.time.Clock()
 pygame.display.set_caption("Chat vs Chiens – Sidescroller")
 font = pygame.font.SysFont(None, 48)
+score_font = pygame.font.SysFont(None, 36)
 
 # -----------------------
 # Classes principales
@@ -183,6 +184,7 @@ def reset_game():
 
 player, level, camera_x = reset_game()
 game_over = False
+score = 0
 
 while True:
     dt = clock.tick(FPS) / 1000  # seconds per frame (peut servir pour des mouvements plus précis)
@@ -193,11 +195,13 @@ while True:
         if event.type == pygame.KEYDOWN and event.key == pygame.K_r and game_over:
             player, level, camera_x = reset_game()
             game_over = False
+            score = 0
 
     if not game_over:
         # Mise à jour logique
         player.update(level.platforms)
         level.update()
+        score = max(score, player.rect.x)
 
         # Collision joueur‑ennemi
         for enemy in level.enemies:
@@ -221,6 +225,8 @@ while True:
     screen.fill(WHITE)
     level.draw(screen, camera_x)
     screen.blit(player.image, (player.rect.x - camera_x, player.rect.y))
+    score_surf = score_font.render(f"Score : {score}", True, BLACK)
+    screen.blit(score_surf, (10, 10))
 
     if game_over:
         if player.rect.x >= level.length - 200:
@@ -230,5 +236,7 @@ while True:
         screen.blit(txt, txt.get_rect(center=(WIDTH // 2, HEIGHT // 2)))
         info = font.render("Appuie sur R pour recommencer", True, BLACK)
         screen.blit(info, info.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 50)))
+        final_score = font.render(f"Score : {score}", True, BLACK)
+        screen.blit(final_score, final_score.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 100)))
 
     pygame.display.flip()
