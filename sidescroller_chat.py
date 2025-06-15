@@ -44,15 +44,16 @@ font = pygame.font.SysFont(None, 48)
 score_font = pygame.font.SysFont(None, 36)
 
 # Chargement des images
-CAT_IMG_PATH = "Imagesidescroller/ChatGPT Image 9 juin 2025, 20_09_08.png"
-DOG_IMG_PATH = "Imagesidescroller/ChatGPT Image 9 juin 2025, 20_09_10.png"
-CAT_SHEET_PATH = "Imagesidescroller/ChatGPT Image 9 juin 2025, 20_09_12.png"
-BG_IMG_PATH = "Imagesidescroller/ChatGPT Image 9 juin 2025, 20_21_54.png"
+CAT_SHEET_PATH = "Imagesidescroller/Chatanimation.png"
+DOG_SHEET_PATH = "Imagesidescroller/Chienanimation.png"
+BG_IMG_PATHS = [f"Imagesidescroller/Background ({i}).png" for i in range(1, 5)]
 
-cat_idle_img = pygame.transform.scale(pygame.image.load(CAT_IMG_PATH).convert_alpha(), (40, 50))
-dog_img = pygame.transform.scale(pygame.image.load(DOG_IMG_PATH).convert_alpha(), (50, 40))
 cat_sheet = pygame.image.load(CAT_SHEET_PATH).convert_alpha()
-background = pygame.transform.scale(pygame.image.load(BG_IMG_PATH).convert(), (WIDTH, HEIGHT))
+dog_sheet = pygame.image.load(DOG_SHEET_PATH).convert_alpha()
+background_frames = [
+    pygame.transform.scale(pygame.image.load(p).convert(), (WIDTH, HEIGHT))
+    for p in BG_IMG_PATHS
+]
 
 # -----------------------
 # Classes principales
@@ -73,12 +74,24 @@ class Player(Entity):
         self.touching_right_wall = False
         # Animation
         sheet_w, sheet_h = cat_sheet.get_size()
-        fw = sheet_w // 4
+        fw = sheet_w // 6
         fh = sheet_h // 4
-        self.walk_frames = [pygame.transform.scale(cat_sheet.subsurface(pygame.Rect(i*fw, 0, fw, fh)), (40, 50)) for i in range(4)]
-        self.jump_frame = pygame.transform.scale(cat_sheet.subsurface(pygame.Rect(0, fh, fw, fh)), (40, 50))
-        self.wall_frame = pygame.transform.scale(cat_sheet.subsurface(pygame.Rect(0, 2*fh, fw, fh)), (40, 50))
-        self.idle_frame = cat_idle_img
+        self.idle_frame = pygame.transform.scale(
+            cat_sheet.subsurface(pygame.Rect(0, 0, fw, fh)), (40, 50)
+        )
+        self.walk_frames = [
+            pygame.transform.scale(
+                cat_sheet.subsurface(pygame.Rect(i * fw, fh, fw, fh)),
+                (40, 50),
+            )
+            for i in range(6)
+        ]
+        self.jump_frame = pygame.transform.scale(
+            cat_sheet.subsurface(pygame.Rect(0, 2 * fh, fw, fh)), (40, 50)
+        )
+        self.wall_frame = pygame.transform.scale(
+            cat_sheet.subsurface(pygame.Rect(0, 3 * fh, fw, fh)), (40, 50)
+        )
         self.anim_index = 0
         self.direction = 1
         self.image = self.idle_frame
@@ -154,7 +167,18 @@ class Player(Entity):
 class Dog(Entity):
     def __init__(self, x, y, left_bound, right_bound):
         super().__init__(x, y, 50, 40)
-        self.image = dog_img
+        sheet_w, sheet_h = dog_sheet.get_size()
+        fw = sheet_w // 6
+        fh = sheet_h // 4
+        self.frames = [
+            pygame.transform.scale(
+                dog_sheet.subsurface(pygame.Rect(i * fw, 0, fw, fh)), (50, 40)
+            )
+            for i in range(6)
+        ]
+        self.anim_index = 0
+        self.image = self.frames[0]
+        self.direction = 1
         self.left_bound = left_bound
         self.right_bound = right_bound
         self.vx = random.choice([-2, 2])
@@ -163,6 +187,10 @@ class Dog(Entity):
         self.rect.x += self.vx
         if self.rect.left <= self.left_bound or self.rect.right >= self.right_bound:
             self.vx *= -1
+        self.direction = 1 if self.vx > 0 else -1
+        self.anim_index = (self.anim_index + 1) % (len(self.frames) * 6)
+        frame = self.frames[self.anim_index // 6]
+        self.image = pygame.transform.flip(frame, self.direction < 0, False)
 
 # -----------------------
 # Niveau
@@ -172,6 +200,8 @@ class Level:
         self.platforms = []  # liste de Rect
         self.enemies = pygame.sprite.Group()
         self.length = 4000  # longueur totale du niveau en pixels
+        self.bg_frames = background_frames
+        self.bg_index = 0
         self.build_level()
 
     def build_level(self):
@@ -203,7 +233,8 @@ class Level:
 
     def draw(self, surface, camera_x):
         # Dessiner l'arrière-plan
-        surface.blit(background, (0, 0))
+        frame = self.bg_frames[int(self.bg_index) % len(self.bg_frames)]
+        surface.blit(frame, (0, 0))
         # Dessiner plateformes
         for plat in self.platforms:
             pygame.draw.rect(surface, GREY, pygame.Rect(plat.x - camera_x, plat.y, plat.width, plat.height))
@@ -212,6 +243,7 @@ class Level:
             surface.blit(enemy.image, (enemy.rect.x - camera_x, enemy.rect.y))
 
     def update(self):
+        self.bg_index += 0.1
         for enemy in self.enemies:
             enemy.update()
 
