@@ -17,7 +17,7 @@ Exécution :
 import pygame
 import sys
 import random
-from typing import List
+from typing import List, Optional
 
 # -----------------------
 # Constantes du jeu
@@ -35,6 +35,7 @@ SCROLL_EDGE = WIDTH // 3  # déclenche le scrolling quand le joueur s'en approch
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 GREY = (80, 80, 80)      # plateformes
+GROUND_COLOR = GREY      # couleur du sol
 
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -196,17 +197,20 @@ class Dog(Entity):
 # Niveau
 # -----------------------
 class Level:
-    def __init__(self):
+    def __init__(self, show_ground: bool = True, ground_texture: Optional[pygame.Surface] = None):
         self.platforms = []  # liste de Rect
         self.enemies = pygame.sprite.Group()
         self.length = 4000  # longueur totale du niveau en pixels
         self.bg_frames = background_frames
         self.bg_index = 0
+        self.show_ground = show_ground
+        self.ground_texture = ground_texture
         self.build_level()
 
     def build_level(self):
         # Sol continu
-        self.platforms.append(pygame.Rect(0, HEIGHT - 40, self.length, 40))
+        self.ground_rect = pygame.Rect(0, HEIGHT - 40, self.length, 40)
+        self.platforms.append(self.ground_rect)
 
         # Quelques plateformes et murs
         structure = [
@@ -238,7 +242,29 @@ class Level:
         surface.blit(frame, (0, 0))
         # Dessiner plateformes
         for plat in self.platforms:
-            pygame.draw.rect(surface, GREY, pygame.Rect(plat.x - camera_x, plat.y, plat.width, plat.height))
+            if plat is self.ground_rect:
+                if not self.show_ground:
+                    continue
+                if self.ground_texture:
+                    tx = 0
+                    while tx < plat.width:
+                        surface.blit(
+                            self.ground_texture,
+                            (plat.x - camera_x + tx, plat.y),
+                        )
+                        tx += self.ground_texture.get_width()
+                else:
+                    pygame.draw.rect(
+                        surface,
+                        GROUND_COLOR,
+                        pygame.Rect(plat.x - camera_x, plat.y, plat.width, plat.height),
+                    )
+            else:
+                pygame.draw.rect(
+                    surface,
+                    GREY,
+                    pygame.Rect(plat.x - camera_x, plat.y, plat.width, plat.height),
+                )
         # Dessiner ennemis
         for enemy in self.enemies:
             surface.blit(enemy.image, (enemy.rect.x - camera_x, enemy.rect.y))
@@ -251,9 +277,9 @@ class Level:
 # Boucle principale
 # -----------------------
 
-def reset_game():
+def reset_game(show_ground: bool = True, ground_texture: Optional[pygame.Surface] = None):
     player = Player(50, HEIGHT - 100)
-    level = Level()
+    level = Level(show_ground=show_ground, ground_texture=ground_texture)
     camera_x = 0
     return player, level, camera_x
 
