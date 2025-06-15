@@ -1,7 +1,7 @@
 """Extract frames from sprite sheets.
 
-This helper script slices sprite sheets into individual frames of 256x341 pixels
-arranged in 6 columns by 3 rows. The extracted frames are saved to a destination
+This helper script slices sprite sheets into individual frames of 256×256 pixels
+arranged in 6 columns by 4 rows. The extracted frames are saved to a destination
 folder.
 
 Usage examples::
@@ -24,9 +24,9 @@ from PIL import Image
 def extract_frames(
     image_path: Path,
     output_dir: Path,
-    frame_size: Tuple[int, int] = (256, 341),
+    frame_size: Tuple[int, int] = (256, 256),
     cols: int = 6,
-    rows: int = 3,
+    rows: int = 4,
     prefix: str = "frame",
 ) -> None:
     """Split *image_path* into frames and store them in *output_dir*.
