@@ -14,7 +14,6 @@ Dependencies: Pillow
 from __future__ import annotations
 
 import argparse
-import os
 from pathlib import Path
 from typing import Tuple
 
