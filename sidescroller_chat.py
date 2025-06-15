@@ -233,7 +233,8 @@ class Level:
 
     def draw(self, surface, camera_x):
         # Dessiner l'arrière-plan
-        frame = self.bg_frames[int(self.bg_index) % len(self.bg_frames)]
+        index = min(int(camera_x // WIDTH), len(self.bg_frames) - 1)
+        frame = self.bg_frames[index]
         surface.blit(frame, (0, 0))
         # Dessiner plateformes
         for plat in self.platforms:
@@ -243,7 +244,6 @@ class Level:
             surface.blit(enemy.image, (enemy.rect.x - camera_x, enemy.rect.y))
 
     def update(self):
-        self.bg_index += 0.1
         for enemy in self.enemies:
             enemy.update()
 
