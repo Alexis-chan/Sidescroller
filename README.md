@@ -5,7 +5,7 @@ Un système de score affiche la distance maximale parcourue par le joueur. Le sc
 
 ## Extraction des sprites
 
-Le script `extract_frames.py` permet de découper les sprite sheets du jeu en images individuelles de 256 × 341 pixels (6 colonnes × 3 lignes).
+Le script `extract_frames.py` permet de découper les sprite sheets du jeu en images individuelles de 256 × 256 pixels (6 colonnes × 4 lignes).
 
 Exemple d'utilisation :
 
